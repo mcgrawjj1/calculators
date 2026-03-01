@@ -30,6 +30,7 @@ Versions follow [Semantic Versioning](https://semver.org/):
 
 ### Changed
 - Interest segment of the principal/interest breakdown bar changed from light green (`--brand-200`) to orange (`--orange: #FB923C`) on both Auto Loan tabs for better visual contrast; added `--orange` design token to `:root` in `css/style.css`
+- Improved mobile breakpoints across all three tiers (≤800px, ≤600px, ≤440px): better hero/section padding, scaled headings and result numbers, tighter card padding, and correctly-sized tabs for phones down to 360px
 - Auto Loan card renamed from "Car Payment" (id `auto-loan`, h3 "Auto Loan"); subtitle updated to reflect dual functionality
 - `js/max-budget.js` also owns `initTabs()` — shared tab switching for both panels
 - `js/max-budget.js` added as a `<script>` reference in `index.html`

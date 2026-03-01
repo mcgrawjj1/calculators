@@ -586,7 +586,9 @@ input[type="number"]::-webkit-inner-spin-button {
    Responsive
    ============================================================ */
 
+/* ── Tablet / large phone (≤ 800px) ── */
 @media (max-width: 800px) {
+  /* Calculator: stack inputs above results */
   .calc-layout {
     grid-template-columns: 1fr;
   }
@@ -600,44 +602,104 @@ input[type="number"]::-webkit-inner-spin-button {
     border-top: none;
   }
 
+  /* Primary result number — slightly smaller */
   .result-amount {
     font-size: 40px;
     letter-spacing: -1.5px;
   }
+
+  /* Hero — reduce vertical padding */
+  .hero {
+    padding: 28px 0 16px;
+  }
+
+  /* Section — tighten vertical rhythm */
+  .section {
+    padding: 36px 0 52px;
+  }
 }
 
+/* ── Phone (≤ 600px) ── */
 @media (max-width: 600px) {
+  /* Header — tighten nav gap, hide placeholder links */
   .site-nav {
-    gap: 16px;
+    gap: 14px;
   }
 
   .nav-link--dim {
     display: none;
   }
 
+  /* Hero */
   .hero-tagline {
-    font-size: 17px;
+    font-size: 16px;
   }
 
+  /* Section heading */
+  .section-heading h2 {
+    font-size: 19px;
+  }
+
+  /* Term buttons: 3 across instead of 6 */
   .term-buttons {
     grid-template-columns: repeat(3, 1fr);
   }
 
+  /* Side-by-side field pairs → single column */
   .field-row {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
+  }
+
+  /* Result number — comfortable on 390px screens */
+  .result-amount {
+    font-size: 34px;
+    letter-spacing: -1px;
+  }
+
+  /* Results sub-rows — allow wrapping on narrow screens */
+  .result-row {
+    flex-wrap: wrap;
+    gap: 4px;
   }
 }
 
+/* ── Small phone (≤ 440px) ── */
 @media (max-width: 440px) {
+  /* Reduce outer gutter */
   .container {
-    padding: 0 16px;
+    padding: 0 14px;
   }
 
-  .calc-card-header,
-  .calc-inputs,
-  .calc-results {
+  /* Tighten card internal padding */
+  .calc-card-header {
+    padding: 18px 18px 0;
+  }
+
+  .calc-inputs {
     padding-left: 18px;
     padding-right: 18px;
+    padding-bottom: 22px;
+  }
+
+  .calc-results {
+    padding: 20px 18px;
+  }
+
+  /* Header — keep logo + one nav link visible */
+  .site-header .container {
+    height: 52px;
+  }
+
+  /* Result number — fits 360px screens cleanly */
+  .result-amount {
+    font-size: 30px;
+    letter-spacing: -0.8px;
+  }
+
+  /* Tab labels — slightly smaller so they don't crowd */
+  .calc-tab {
+    font-size: 13px;
+    padding: 10px 14px;
   }
 }
