@@ -29,6 +29,7 @@ Versions follow [Semantic Versioning](https://semver.org/):
 - Removed duplicate `const fmtCurrency` and `const fmtCurrencyRounded` declarations from `max-budget.js` — they conflicted with identical declarations in `car-payment.js`, causing a `SyntaxError` that silently crashed the entire script and prevented tab switching from initializing
 
 ### Changed
+- Interest segment of the principal/interest breakdown bar changed from light green (`--brand-200`) to orange (`--orange: #FB923C`) on both Auto Loan tabs for better visual contrast; added `--orange` design token to `:root` in `css/style.css`
 - Auto Loan card renamed from "Car Payment" (id `auto-loan`, h3 "Auto Loan"); subtitle updated to reflect dual functionality
 - `js/max-budget.js` also owns `initTabs()` — shared tab switching for both panels
 - `js/max-budget.js` added as a `<script>` reference in `index.html`
