@@ -48,25 +48,8 @@ function initTabs() {
   });
 }
 
-// ── Formatters ───────────────────────────────────────────────
-
-const fmtCurrency = (n) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(n);
-
-const fmtCurrencyRounded = (n) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(n);
-
 // ── Helpers ──────────────────────────────────────────────────
+// Note: fmtCurrency and fmtCurrencyRounded are defined in car-payment.js (loaded first)
 
 function getVal(id) {
   return parseFloat(document.getElementById(id).value) || 0;

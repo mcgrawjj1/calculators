@@ -26,6 +26,7 @@ Versions follow [Semantic Versioning](https://semver.org/):
 
 ### Fixed
 - Tab switching now works reliably: replaced `hidden` attribute toggling with explicit CSS class `.is-active` on `.calc-panel` elements; added `.calc-panel { display: none }` / `.calc-panel.is-active { display: block }` to stylesheet so visibility is not dependent on the browser UA stylesheet
+- Removed duplicate `const fmtCurrency` and `const fmtCurrencyRounded` declarations from `max-budget.js` — they conflicted with identical declarations in `car-payment.js`, causing a `SyntaxError` that silently crashed the entire script and prevented tab switching from initializing
 
 ### Changed
 - Auto Loan card renamed from "Car Payment" (id `auto-loan`, h3 "Auto Loan"); subtitle updated to reflect dual functionality
