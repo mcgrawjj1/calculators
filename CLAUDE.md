@@ -64,14 +64,30 @@ calculators/
 - **Calculator cards** use `.calc-layout` (2-col: inputs left, results right)
 - Results panel has a green-50 background to visually distinguish from inputs
 
+## Mobile Responsiveness — MANDATORY
+Every calculator and every section of this site **must be fully responsive**. The three breakpoints in `css/style.css` are the standard — all new UI must be verified against each:
+
+| Breakpoint | Target devices | Required behavior |
+|---|---|---|
+| `≤ 800px` | Tablets, large phones landscape | `.calc-layout` stacks to 1-col; reduce hero/section padding |
+| `≤ 600px` | Phones (390px–600px) | Headings and result numbers scale down; side-by-side fields stack; nav condenses |
+| `≤ 440px` | Small phones (360px–440px) | Card padding tightens; tabs, header, and result numbers fit without overflow |
+
+**Rules:**
+- Never add a new calculator layout without checking it at all three breakpoints
+- New multi-column field groups (`.field-row`) automatically stack at ≤ 600px — use `.field-row` for any paired inputs
+- New result numbers (`.result-amount`) inherit scaling — verify they don't overflow at 360px
+- If new UI elements need breakpoint-specific rules, add them inside the existing `@media` blocks in `css/style.css` (do not create new breakpoint values)
+
 ## Adding a New Calculator
 1. Add `<article class="calc-card">` in the correct `<section>` in `index.html`
 2. Follow the `.calc-layout` two-column pattern (inputs left, results right)
 3. Add a new JS file in `js/` and reference with `<script src="js/...">` before `</body>`
 4. If it's a new section, add a `<section id="...">` and a nav `<a href="#...">` link
-5. **Update README.md** — add full calculator documentation under the Calculators section
-6. **Update CHANGELOG.md** — add `Added` entry under `[Unreleased]`
-7. **Update roadmap** in both README.md and CLAUDE.md (check the box)
+5. **Verify mobile responsiveness** at all three breakpoints (800px, 600px, 440px) — see Mobile Responsiveness section above
+6. **Update README.md** — add full calculator documentation under the Calculators section
+7. **Update CHANGELOG.md** — add `Added` entry under `[Unreleased]`
+8. **Update roadmap** in both README.md and CLAUDE.md (check the box)
 
 ## Calculator: Car Payment (`js/car-payment.js`)
 **Inputs:** Vehicle Price, Down Payment, Trade-in Value, Sales Tax %, APR %, Loan Term (buttons)
