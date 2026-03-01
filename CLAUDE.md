@@ -53,7 +53,8 @@ calculators/
 ├── css/
 │   └── style.css      ← Global styles, CSS custom properties design tokens
 └── js/
-    ├── car-payment.js ← Car payment calculator
+    ├── car-payment.js ← Car Payment tab (forward amortization)
+    ├── max-budget.js  ← Monthly Payment tab (reverse amortization) + tab switching
     └── ...            ← Future calculators get their own files
 ```
 
@@ -82,6 +83,7 @@ calculators/
 ## Planned Roadmap
 ### Finance
 - [x] Car Payment
+- [x] Monthly Payment / Max Budget (reverse auto loan — Tab 2 of Auto Loan card)
 - [ ] Mortgage (with full amortization table + extra payments)
 - [ ] Savings Goal / Future Value
 - [ ] Loan Comparison (side-by-side)

@@ -12,7 +12,24 @@ Versions follow [Semantic Versioning](https://semver.org/):
 
 ## [Unreleased]
 
-_Changes staged here move to a versioned release when pushed/deployed._
+### Added
+- **Monthly Payment tab** (Max Budget reverse calculator) on the Auto Loan card (`js/max-budget.js`)
+  - Inputs: Monthly Payment I Can Afford, Down Payment, Trade-in Value, Sales Tax %, APR %, Loan Term
+  - Reverse amortization formula: `P = M·[(1+r)^n − 1] / [r(1+r)^n]`
+  - Back-calculates max vehicle price: `price = (principal + down) / (1 + taxRate) + tradeIn`
+  - Outputs: Max Vehicle Price, Loan Amount, Total Interest, Total Cost, breakdown bar
+  - Live recalculation on every input; defaults pre-filled ($500/mo, $3k down, 6% tax, 6.9% APR, 60 mo)
+- **Tab bar UI** on the Auto Loan card (`css/style.css`, `index.html`)
+  - Underline-style tabs: Car Payment | Monthly Payment
+  - ARIA roles: `tablist`, `tab`, `tabpanel`, `aria-selected`, `aria-controls`
+  - Tab switching hides/shows `.calc-panel` elements via `hidden` attribute
+
+### Changed
+- Auto Loan card renamed from "Car Payment" (id `auto-loan`, h3 "Auto Loan"); subtitle updated to reflect dual functionality
+- `js/max-budget.js` also owns `initTabs()` — shared tab switching for both panels
+- `js/max-budget.js` added as a `<script>` reference in `index.html`
+- File structure updated in `README.md` and `CLAUDE.md`
+- Roadmap: Monthly Payment / Max Budget checked off in `README.md` and `CLAUDE.md`
 
 ---
 

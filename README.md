@@ -77,7 +77,8 @@ calculators/
 │                             at the top of the file under :root { }
 │
 ├── js/
-│   └── car-payment.js      # Car Payment calculator logic (vanilla JS)
+│   └── car-payment.js      # Car Payment calculator logic (Tab 1 of Auto Loan card)
+│   └── max-budget.js       # Max Budget reverse calculator + tab switching (Tab 2)
 │   └── ...                 # Future calculators each get their own file
 │
 ├── README.md               # This file — human-readable project documentation
@@ -92,7 +93,8 @@ calculators/
 |---|---|
 | `index.html` | Page structure, all calculator HTML, nav links. Add new calc cards here. |
 | `css/style.css` | Every style rule. CSS custom properties at top act as the design token system. |
-| `js/car-payment.js` | Car payment logic: reads inputs, runs formula, writes to DOM. |
+| `js/car-payment.js` | Car Payment tab: reads inputs, runs forward amortization, writes to DOM. |
+| `js/max-budget.js` | Monthly Payment tab: tab switching logic + reverse amortization. |
 | `CLAUDE.md` | Instructions and context for Claude AI — keeps future sessions consistent. |
 | `CHANGELOG.md` | Running record of every version and what changed. Updated with every release. |
 
@@ -159,15 +161,25 @@ Kept intentionally subtle — 6–8% opacity so cards lift off the page without 
 
 ## Calculators
 
-### Car Payment Calculator
+### Auto Loan (tabbed card)
+
+**Card ID:** `#auto-loan`
+**Section:** Finance
+**Tabs:** Car Payment · Monthly Payment (reverse)
+**Tab switching:** `js/max-budget.js` — `initTabs()` toggles `.active` on `.calc-tab` elements and `hidden` on `.calc-panel` elements.
+
+The Auto Loan card hosts two calculators in a tabbed layout. Both tabs share the same visual structure (inputs left, results right) but solve the loan equation in opposite directions.
+
+---
+
+#### Tab 1 — Car Payment Calculator
 
 **File:** `js/car-payment.js`
-**Section:** Finance
-**Card ID:** `#car-payment`
+**Panel ID:** `#car-payment-panel`
 
-#### What it does
+##### What it does
 
-Calculates the monthly payment for an auto loan given a vehicle price, financing terms, and applicable taxes. All results update live as the user types.
+Given a vehicle price and financing terms, calculates the monthly payment. All results update live as the user types.
 
 #### Inputs
 
@@ -226,6 +238,60 @@ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD',
   minimumFractionDigits: 0, maximumFractionDigits: 0 })
 ```
+
+---
+
+#### Tab 2 — Monthly Payment (Max Budget) Calculator
+
+**File:** `js/max-budget.js`
+**Panel ID:** `#max-budget-panel`
+
+##### What it does
+
+The reverse of Tab 1. Given a monthly payment the user is comfortable with, calculates the maximum vehicle price they can afford. All results update live.
+
+##### Inputs
+
+| Field | ID | Type | Default | Notes |
+|---|---|---|---|---|
+| Monthly Payment I Can Afford | `mb-monthly-payment` | number | 500 | Target payment ceiling |
+| Down Payment | `mb-down-payment` | number | 3,000 | Cash paid upfront |
+| Trade-in Value | `mb-trade-in` | number | 0 | Applied against price, reduces taxable amount |
+| Sales Tax Rate | `mb-tax-rate` | number | 6.0% | State/local sales tax |
+| Interest Rate (APR) | `mb-apr` | number | 6.9% | Annual Percentage Rate |
+| Loan Term | `mb-term-btn` buttons | button group | 60 mo (5 yr) | Options: 24, 36, 48, 60, 72, 84 months |
+
+##### Outputs
+
+| Field | ID | Format |
+|---|---|---|
+| Max Vehicle Price | `mb-max-price` | `$32,000` |
+| Loan Amount | `mb-loan-amount` | `$26,500` |
+| Total Interest | `mb-total-interest` | `$3,800` |
+| Total Cost | `mb-total-cost` | `$30,300` |
+| Breakdown bar | `mb-bar-principal` / `mb-bar-interest` | Animated width % |
+
+##### Formula
+
+**Step 1** — Reverse the amortization formula to find the maximum principal:
+
+```
+P = M × [(1+r)^n − 1] / [r(1+r)^n]
+```
+
+Where `M` is the target monthly payment, `r` is the monthly rate, `n` is the term in months.
+
+**Step 2** — Back-calculate the max vehicle price from the principal:
+
+```
+principal = (price − tradeIn)(1 + taxRate) − down
+  ↓ solve for price:
+price = (principal + down) / (1 + taxRate) + tradeIn
+```
+
+##### Tax logic
+
+Same as Tab 1: tax applies to `(price − tradeIn)`, rolled into the financed principal. The algebra is inverted to solve for price instead.
 
 ---
 
@@ -401,6 +467,7 @@ git push
 
 ### Finance
 - [x] Car Payment
+- [x] Monthly Payment / Max Budget (reverse auto loan)
 - [ ] Mortgage — monthly payment, full amortization table, extra payment scenarios
 - [ ] Savings Goal — how much to save monthly to reach a target
 - [ ] Loan Comparison — compare two loans side by side

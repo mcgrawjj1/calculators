@@ -392,6 +392,40 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* ============================================================
+   Calculator Tabs
+   ============================================================ */
+
+.calc-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  gap: 4px;
+}
+
+.calc-tab {
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; /* overlap parent border-bottom */
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.calc-tab:hover:not(.active) {
+  color: var(--text-secondary);
+}
+
+.calc-tab.active {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+}
+
+/* ============================================================
    Results
    ============================================================ */
 
