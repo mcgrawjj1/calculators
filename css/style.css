@@ -392,8 +392,17 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* ============================================================
-   Calculator Tabs
+   Calculator Tabs & Panels
    ============================================================ */
+
+/* Panels are hidden by default; JS adds .is-active to show them */
+.calc-panel {
+  display: none;
+}
+
+.calc-panel.is-active {
+  display: block;
+}
 
 .calc-tabs {
   display: flex;

@@ -24,6 +24,9 @@ Versions follow [Semantic Versioning](https://semver.org/):
   - ARIA roles: `tablist`, `tab`, `tabpanel`, `aria-selected`, `aria-controls`
   - Tab switching hides/shows `.calc-panel` elements via `hidden` attribute
 
+### Fixed
+- Tab switching now works reliably: replaced `hidden` attribute toggling with explicit CSS class `.is-active` on `.calc-panel` elements; added `.calc-panel { display: none }` / `.calc-panel.is-active { display: block }` to stylesheet so visibility is not dependent on the browser UA stylesheet
+
 ### Changed
 - Auto Loan card renamed from "Car Payment" (id `auto-loan`, h3 "Auto Loan"); subtitle updated to reflect dual functionality
 - `js/max-budget.js` also owns `initTabs()` — shared tab switching for both panels

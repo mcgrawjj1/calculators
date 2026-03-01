@@ -36,14 +36,14 @@ function initTabs() {
       });
 
       // Hide all panels
-      panels.forEach((p) => { p.hidden = true; });
+      panels.forEach((p) => { p.classList.remove('is-active'); });
 
       // Activate clicked tab
       tab.classList.add('active');
       tab.setAttribute('aria-selected', 'true');
 
       // Show target panel
-      document.getElementById(target + '-panel').hidden = false;
+      document.getElementById(target + '-panel').classList.add('is-active');
     });
   });
 }
