@@ -13,6 +13,14 @@ Versions follow [Semantic Versioning](https://semver.org/):
 ## [Unreleased]
 
 ### Added
+- **Mortgage Calculator** — new card in the Finance section (`js/mortgage.js`, `#mortgage` in `index.html`)
+  - Inputs: Home Price, Down Payment (% or $), Loan Term (10/15/20/25/30 yr buttons), Interest Rate, Start Month/Year
+  - Optional Taxes & Costs section (collapsible, open by default): Property Tax (% or $ toggle), Home Insurance, PMI, HOA Fee, Other Costs — rows auto-hide when $0
+  - Extra Payments section (collapsible, closed by default): Extra Monthly, Extra Yearly, One-time lump sum with month number selector
+  - Results: Monthly P&I (primary), total monthly with costs (hidden when no costs), breakdown table (Monthly + Total columns), principal/interest bar, 6 summary stats including Payoff Date
+  - Full amortization schedule (full-width below the calculator) with Annual/Monthly view toggle
+  - Formula: `M = P·r(1+r)^n / [(1+r)^n − 1]`; extra payments applied each month reduce balance and shorten payoff
+- **New CSS components** (`css/style.css`): `select` element styling, `.mode-toggle` inline % / $ toggle, `.mort-term-buttons` 5-column variant, `.collapse-hd` / `.collapse-body` with CSS-driven chevron animation via `aria-expanded`, `.mort-bd-table`, `.amort-section` / `.amort-wrap` / `.amort-table`
 - **Monthly Payment tab** (Max Budget reverse calculator) on the Auto Loan card (`js/max-budget.js`)
   - Inputs: Monthly Payment I Can Afford, Down Payment, Trade-in Value, Sales Tax %, APR %, Loan Term
   - Reverse amortization formula: `P = M·[(1+r)^n − 1] / [r(1+r)^n]`

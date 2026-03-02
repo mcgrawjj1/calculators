@@ -16,6 +16,7 @@ A collection of practical, clean calculators for everyday decisions. Built with 
 5. [Design System](#design-system)
 6. [Calculators](#calculators)
    - [Car Payment](#car-payment-calculator)
+   - [Mortgage](#mortgage-calculator)
 7. [How to Add a New Calculator](#how-to-add-a-new-calculator)
 8. [Deployment](#deployment)
 9. [Roadmap](#roadmap)
@@ -79,6 +80,7 @@ calculators/
 ├── js/
 │   └── car-payment.js      # Car Payment calculator logic (Tab 1 of Auto Loan card)
 │   └── max-budget.js       # Max Budget reverse calculator + tab switching (Tab 2)
+│   └── mortgage.js         # Mortgage calculator — payment, breakdown, amortization
 │   └── ...                 # Future calculators each get their own file
 │
 ├── README.md               # This file — human-readable project documentation
@@ -95,6 +97,7 @@ calculators/
 | `css/style.css` | Every style rule. CSS custom properties at top act as the design token system. |
 | `js/car-payment.js` | Car Payment tab: reads inputs, runs forward amortization, writes to DOM. |
 | `js/max-budget.js` | Monthly Payment tab: tab switching logic + reverse amortization. |
+| `js/mortgage.js` | Mortgage: payment, optional costs, extra payments, amortization table. |
 | `CLAUDE.md` | Instructions and context for Claude AI — keeps future sessions consistent. |
 | `CHANGELOG.md` | Running record of every version and what changed. Updated with every release. |
 
@@ -111,7 +114,8 @@ All design tokens are defined as CSS custom properties in the `:root` block at t
 | `--brand` | `#16A34A` | Primary accent — buttons, amounts, underlines |
 | `--brand-50` | `#F0FDF4` | Results panel background |
 | `--brand-100` | `#DCFCE7` | Breakdown bar track, dividers |
-| `--brand-200` | `#BBF7D0` | Interest portion of breakdown bar |
+| `--brand-200` | `#BBF7D0` | Breakdown bar track, table dividers |
+| `--orange` | `#FB923C` | Interest portion of breakdown bar |
 | `--brand-700` | `#15803D` | Total cost amount, result labels |
 | `--white` | `#FFFFFF` | Page background, card background |
 | `--gray-50` | `#F8FAFC` | Input field backgrounds |
@@ -295,6 +299,93 @@ Same as Tab 1: tax applies to `(price − tradeIn)`, rolled into the financed pr
 
 ---
 
+---
+
+### Mortgage Calculator
+
+**Card ID:** `#mortgage`
+**Section:** Finance
+**File:** `js/mortgage.js`
+
+Calculates the monthly principal & interest payment for a home loan, optionally including property taxes, home insurance, PMI, HOA, and other costs. Supports extra payments (monthly, yearly, and one-time) that shorten the loan and reduce total interest. Displays a full amortization schedule (annual or monthly view) below the calculator.
+
+#### Inputs
+
+| Field | ID | Type | Default | Notes |
+|---|---|---|---|---|
+| Home Price | `mort-home-price` | number | $400,000 | Purchase price of the home |
+| Down Payment | `mort-down-payment` | number | 20 | Percent or dollar; toggled with % / $ buttons |
+| Loan Term | `.mort-term-btn` buttons | button group | 30 yr | Options: 10, 15, 20, 25, 30 years |
+| Interest Rate (APR) | `mort-interest-rate` | number | 6.5% | Annual Percentage Rate |
+| Loan Starts | `mort-start-month` / `mort-start-year` | select / number | Mar 2026 | Used to label amortization table and compute payoff date |
+| Property Tax | `mort-prop-tax` | number | 1.2% | Annual; toggled between % of home price or flat $ |
+| Home Insurance | `mort-home-ins` | number | $1,500 | Annual dollar amount |
+| PMI | `mort-pmi` | number | $0 | Annual dollar amount; row hidden when $0 |
+| HOA Fee | `mort-hoa` | number | $0 | Monthly dollar amount; row hidden when $0 |
+| Other Costs | `mort-other` | number | $0 | Annual dollar amount; row hidden when $0 |
+| Extra Monthly | `mort-extra-monthly` | number | $0 | Applied every month on top of the regular payment |
+| Extra Yearly | `mort-extra-yearly` | number | $0 | Applied every 12th month (anniv. of loan start) |
+| One-time Payment | `mort-extra-once` | number | $0 | Single lump sum applied at the specified month |
+| At Month # | `mort-extra-once-mo` | number | 12 | Loan month number (1–360) when lump sum is applied |
+
+#### Outputs
+
+| Field | ID | Format |
+|---|---|---|
+| Monthly P&I Payment | `mort-monthly-pi` | `$2,528` |
+| Total with Taxes & Costs | `mort-monthly-total` | `$3,253` (hidden when no costs) |
+| Breakdown table | `mort-bd-*` | Monthly + Total columns per cost type |
+| Principal / Interest bar | `mort-bar-principal` / `mort-bar-interest` | Animated width % |
+| Home Price | `mort-out-home-price` | `$400,000.00` |
+| Down Payment | `mort-out-down` | `$80,000.00` |
+| Loan Amount | `mort-out-loan` | `$320,000.00` |
+| Total Payments (P&I) | `mort-out-pi-total` | `$695,797.00` |
+| Total Interest | `mort-out-interest` | `$375,797.00` |
+| Payoff Date | `mort-out-payoff` | `Feb 2056` |
+| Amortization schedule | `mort-amort-body` | Rows injected by JS; annual or monthly view |
+
+#### Formula
+
+Standard loan amortization:
+
+```
+M = P × [r(1+r)^n] / [(1+r)^n − 1]
+```
+
+Where `P` = loan principal, `r` = monthly rate (APR ÷ 12 ÷ 100), `n` = term in months.
+
+#### Extra Payments
+
+Extra payments are applied after the base principal/interest split each month. They directly reduce the outstanding balance, shortening the loan:
+
+```
+interest      = balance × r
+principalPaid = M − interest + extraThisMonth
+balance       = balance − principalPaid
+```
+
+The schedule loop exits when `balance ≤ 0` (before `n` months if extra payments are made), producing a shorter amortization table and earlier payoff date.
+
+#### Cost Handling
+
+- **Property Tax:** entered as % of home price or annual $ — converted to monthly by dividing by 12
+- **Home Insurance / PMI / Other:** entered as annual $ — divided by 12
+- **HOA Fee:** entered as monthly $ — used directly
+- The breakdown table and "total with costs" line are hidden entirely when all optional costs are $0
+
+#### Amortization Table
+
+Rows are injected into `#mort-amort-body` by `renderAmortTable()`. Two views:
+
+| View | First column | Row data |
+|---|---|---|
+| Annual (default) | Calendar year | Sum of principal paid, interest paid, total paid; ending balance |
+| Monthly | "Mon YYYY" (e.g. "Mar 2026") | Per-month principal, interest, total, balance |
+
+Calendar year is determined from the start month/year: row month `n` maps to `startYear + floor((startMonth − 1 + n − 1) / 12)`.
+
+---
+
 ## How to Add a New Calculator
 
 Follow these steps to add a new calculator card to an existing section (e.g., Finance), or add a whole new section.
@@ -468,7 +559,7 @@ git push
 ### Finance
 - [x] Car Payment
 - [x] Monthly Payment / Max Budget (reverse auto loan)
-- [ ] Mortgage — monthly payment, full amortization table, extra payment scenarios
+- [x] Mortgage — monthly payment, full amortization table, extra payment scenarios
 - [ ] Savings Goal — how much to save monthly to reach a target
 - [ ] Loan Comparison — compare two loans side by side
 

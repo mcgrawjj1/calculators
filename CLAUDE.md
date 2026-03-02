@@ -89,6 +89,13 @@ Every calculator and every section of this site **must be fully responsive**. Th
 7. **Update CHANGELOG.md** — add `Added` entry under `[Unreleased]`
 8. **Update roadmap** in both README.md and CLAUDE.md (check the box)
 
+## Calculator: Mortgage (`js/mortgage.js`)
+**Inputs:** Home Price, Down Payment (% or $ toggle), Loan Term (10/15/20/25/30 yr buttons), Interest Rate (APR), Start Month/Year, Property Tax (% or $ toggle), Home Insurance ($, annual), PMI ($, annual), HOA Fee ($, monthly), Other Costs ($, annual), Extra Monthly, Extra Yearly, One-time lump sum + at month #
+**Formula:** Standard amortization — `M = P·r(1+r)^n / [(1+r)^n − 1]`; extra payments reduce balance each month
+**Outputs:** Monthly P&I (primary), total monthly with costs (secondary, hidden when no costs), breakdown table (Monthly + Total per line item), principal/interest bar, 6 summary stats (Home Price, Down Payment, Loan Amount, Total Payments, Total Interest, Payoff Date)
+**Amortization table:** Full-width below the calculator; Annual view (grouped by calendar year) and Monthly view (one row per month); rows injected by JS
+**Behavior:** Live recalculation on every input; Taxes & Costs section collapses/expands; Extra Payments section collapsed by default; % / $ mode toggles convert existing values to new unit
+
 ## Calculator: Car Payment (`js/car-payment.js`)
 **Inputs:** Vehicle Price, Down Payment, Trade-in Value, Sales Tax %, APR %, Loan Term (buttons)
 **Formula:** Standard amortization — `M = P·r(1+r)^n / [(1+r)^n - 1]`
@@ -100,7 +107,7 @@ Every calculator and every section of this site **must be fully responsive**. Th
 ### Finance
 - [x] Car Payment
 - [x] Monthly Payment / Max Budget (reverse auto loan — Tab 2 of Auto Loan card)
-- [ ] Mortgage (with full amortization table + extra payments)
+- [x] Mortgage (with full amortization table + extra payments)
 - [ ] Savings Goal / Future Value
 - [ ] Loan Comparison (side-by-side)
 
