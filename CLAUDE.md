@@ -48,15 +48,25 @@ calculators/
 ├── CLAUDE.md          ← This file (project context for Claude)
 ├── README.md          ← Human-readable project documentation (KEEP UPDATED)
 ├── CHANGELOG.md       ← Version history, every change logged here (KEEP UPDATED)
-├── index.html         ← Single-page app, all sections
+├── index.html         ← Hub page — lists all calculators by category with links
+├── auto-loan.html     ← Dedicated Auto Loan calculator page
+├── mortgage.html      ← Dedicated Mortgage calculator page
 ├── .gitignore
 ├── css/
 │   └── style.css      ← Global styles, CSS custom properties design tokens
 └── js/
+    ├── utils.js       ← Shared formatters (fmtCurrency, fmtCurrencyRounded) — load first
     ├── car-payment.js ← Car Payment tab (forward amortization)
     ├── max-budget.js  ← Monthly Payment tab (reverse amortization) + tab switching
+    ├── mortgage.js    ← Mortgage calculator + amortization table
     └── ...            ← Future calculators get their own files
 ```
+
+## Page Architecture
+- **`index.html`** is the hub/landing page — it lists calculators as clickable cards, grouped by section. No calculator logic runs here.
+- **Each calculator** gets its own HTML file (e.g. `auto-loan.html`, `mortgage.html`). The file includes only the JS it needs.
+- **`js/utils.js`** must be the first `<script>` on every calculator page — it defines the shared `fmtCurrency` and `fmtCurrencyRounded` constants that all calculator scripts depend on.
+- Calculator pages use `.page-hero` + `.breadcrumb` below the header to show context and a back path to the hub.
 
 ## Page Structure
 - **Sticky header** with logo + section navigation

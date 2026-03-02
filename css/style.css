@@ -853,6 +853,151 @@ select {
 }
 
 /* ============================================================
+   Hub Page — Calculator Cards
+   ============================================================ */
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.hub-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 22px 24px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+}
+
+.hub-card:hover {
+  border-color: var(--brand);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.hub-card-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--brand-50);
+  border: 1px solid var(--brand-100);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hub-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.hub-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.hub-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.hub-card-arrow {
+  font-size: 20px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color 0.18s, transform 0.18s;
+  margin-left: 8px;
+}
+
+.hub-card:hover .hub-card-arrow {
+  color: var(--brand);
+  transform: translateX(4px);
+}
+
+/* ── Coming-soon sections ── */
+.section--dim {
+  opacity: 0.45;
+  pointer-events: none;
+  padding-bottom: 32px;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  background: var(--gray-100);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  vertical-align: middle;
+  margin-left: 10px;
+  font-style: normal;
+}
+
+/* ============================================================
+   Calculator Pages — Page Hero & Breadcrumb
+   ============================================================ */
+
+.page-hero {
+  padding: 28px 0 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.breadcrumb a {
+  color: var(--brand);
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.breadcrumb a:hover {
+  opacity: 0.75;
+}
+
+.breadcrumb-sep {
+  color: var(--border);
+  font-size: 14px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.6px;
+  line-height: 1.15;
+}
+
+.page-subtitle {
+  margin-top: 5px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
    Footer
    ============================================================ */
 
@@ -896,6 +1041,15 @@ select {
   /* Hero — reduce vertical padding */
   .hero {
     padding: 28px 0 16px;
+  }
+
+  /* Page hero on calculator pages */
+  .page-hero {
+    padding: 20px 0 16px;
+  }
+
+  .page-title {
+    font-size: 22px;
   }
 
   /* Section — tighten vertical rhythm */
@@ -996,5 +1150,20 @@ select {
   /* Amortization section padding */
   .amort-section {
     padding: 18px 18px 22px;
+  }
+
+  /* Hub cards — tighter on small phones */
+  .hub-card {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .hub-card-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .page-title {
+    font-size: 20px;
   }
 }

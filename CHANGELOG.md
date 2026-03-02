@@ -13,7 +13,14 @@ Versions follow [Semantic Versioning](https://semver.org/):
 ## [Unreleased]
 
 ### Added
-- **Mortgage Calculator** — new card in the Finance section (`js/mortgage.js`, `#mortgage` in `index.html`)
+- **Multi-page architecture** — each calculator now lives on its own dedicated HTML page
+  - `index.html` rebuilt as hub: Finance section with clickable calculator cards; Coming Soon sections (Unit Conversion, Currency) shown dimmed
+  - `auto-loan.html` — dedicated Auto Loan calculator page (Car Payment + Monthly Payment tabs)
+  - `mortgage.html` — dedicated Mortgage calculator page (full calculator + amortization table)
+  - `js/utils.js` — shared `fmtCurrency` / `fmtCurrencyRounded` formatters; included on all calculator pages before calculator scripts
+  - Hub cards: icon, title, description, animated `→` arrow; hover lifts with brand border
+  - Calculator pages: breadcrumb (Home / Finance / Calculator) + page title below the sticky header
+- **Mortgage Calculator** — new card in the Finance section (`js/mortgage.js`, `mortgage.html`)
   - Inputs: Home Price, Down Payment (% or $), Loan Term (10/15/20/25/30 yr buttons), Interest Rate, Start Month/Year
   - Optional Taxes & Costs section (collapsible, open by default): Property Tax (% or $ toggle), Home Insurance, PMI, HOA Fee, Other Costs — rows auto-hide when $0
   - Extra Payments section (collapsible, closed by default): Extra Monthly, Extra Yearly, One-time lump sum with month number selector

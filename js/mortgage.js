@@ -12,7 +12,7 @@ const MORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun',
                      'Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-// Note: fmtCurrency and fmtCurrencyRounded are defined in car-payment.js (loaded first)
+// Note: fmtCurrency and fmtCurrencyRounded are defined in js/utils.js (loaded first)
 
 function mgv(id)        { return parseFloat(document.getElementById(id).value) || 0; }
 function mel(id)        { return document.getElementById(id); }

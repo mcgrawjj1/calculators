@@ -15,7 +15,7 @@
   <!-- ======= HEADER ======= -->
   <header class="site-header">
     <div class="container">
-      <a href="#" class="logo">
+      <a href="index.html" class="logo">
         <svg class="logo-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <rect x="1" y="1" width="7" height="7" rx="2" fill="#16A34A"/>
           <rect x="10" y="1" width="7" height="7" rx="2" fill="#16A34A" opacity="0.4"/>
@@ -51,613 +51,59 @@
           <p>Plan your financial decisions with confidence</p>
         </div>
 
-        <div class="calc-grid">
+        <div class="hub-grid">
 
-          <!-- ── Auto Loan Calculator (tabbed: Car Payment + Max Budget) ── -->
-          <article class="calc-card" id="auto-loan">
-
-            <div class="calc-card-header">
+          <!-- Auto Loan -->
+          <a href="auto-loan.html" class="hub-card">
+            <div class="hub-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 17H3V13L5.5 7H18.5L21 13V17H19M5 17A2 2 0 0 0 7 19A2 2 0 0 0 9 17M5 17A2 2 0 0 1 7 15A2 2 0 0 1 9 17M9 17H15M15 17A2 2 0 0 0 17 19A2 2 0 0 0 19 17M15 17A2 2 0 0 1 17 15A2 2 0 0 1 19 17" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="hub-card-content">
               <h3>Auto Loan</h3>
-              <p>Calculate your payment or find your max budget</p>
+              <p>Calculate your monthly payment or find your maximum vehicle budget</p>
             </div>
+            <span class="hub-card-arrow" aria-hidden="true">→</span>
+          </a>
 
-            <!-- Tab bar -->
-            <div class="calc-tabs" role="tablist">
-              <button class="calc-tab active" data-tab="car-payment"
-                      role="tab" aria-selected="true" aria-controls="car-payment-panel" type="button">
-                Car Payment
-              </button>
-              <button class="calc-tab" data-tab="max-budget"
-                      role="tab" aria-selected="false" aria-controls="max-budget-panel" type="button">
-                Monthly Payment
-              </button>
+          <!-- Mortgage -->
+          <a href="mortgage.html" class="hub-card">
+            <div class="hub-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-
-            <!-- ── Panel 1: Car Payment ── -->
-            <div class="calc-panel is-active" id="car-payment-panel" role="tabpanel">
-              <div class="calc-layout">
-
-                <!-- INPUTS -->
-                <div class="calc-inputs">
-
-                  <div class="field">
-                    <label for="vehicle-price">Vehicle Price</label>
-                    <div class="input-group">
-                      <span class="input-addon" aria-hidden="true">$</span>
-                      <input
-                        type="number" id="vehicle-price"
-                        min="0" step="100" value="30000"
-                        placeholder="30000"
-                        aria-label="Vehicle price in dollars">
-                    </div>
-                  </div>
-
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="down-payment">Down Payment</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input
-                          type="number" id="down-payment"
-                          min="0" step="100" value="3000"
-                          placeholder="0">
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="trade-in">Trade-in Value</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input
-                          type="number" id="trade-in"
-                          min="0" step="100" value="0"
-                          placeholder="0">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="tax-rate">Sales Tax</label>
-                      <div class="input-group">
-                        <input
-                          type="number" id="tax-rate"
-                          min="0" max="20" step="0.1" value="6.0"
-                          placeholder="0.0">
-                        <span class="input-addon input-addon--suffix" aria-hidden="true">%</span>
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="apr">Interest Rate (APR)</label>
-                      <div class="input-group">
-                        <input
-                          type="number" id="apr"
-                          min="0" max="30" step="0.1" value="6.9"
-                          placeholder="0.0">
-                        <span class="input-addon input-addon--suffix" aria-hidden="true">%</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="field">
-                    <label>Loan Term</label>
-                    <div class="term-buttons" id="term-buttons" role="group" aria-label="Select loan term">
-                      <button class="term-btn" data-months="24" type="button">2 yr</button>
-                      <button class="term-btn" data-months="36" type="button">3 yr</button>
-                      <button class="term-btn" data-months="48" type="button">4 yr</button>
-                      <button class="term-btn active" data-months="60" type="button">5 yr</button>
-                      <button class="term-btn" data-months="72" type="button">6 yr</button>
-                      <button class="term-btn" data-months="84" type="button">7 yr</button>
-                    </div>
-                  </div>
-
-                </div><!-- /calc-inputs -->
-
-                <!-- RESULTS -->
-                <div class="calc-results" aria-live="polite" aria-label="Calculation results">
-
-                  <div class="result-primary">
-                    <div class="result-label">Monthly Payment</div>
-                    <div class="result-amount" id="monthly-payment">—</div>
-                    <div class="result-sublabel">per month</div>
-                  </div>
-
-                  <div class="result-divider"></div>
-
-                  <div class="result-stats">
-                    <div class="result-stat">
-                      <div class="stat-label">Loan Amount</div>
-                      <div class="stat-value" id="loan-amount">—</div>
-                    </div>
-                    <div class="result-stat">
-                      <div class="stat-label">Total Interest</div>
-                      <div class="stat-value" id="total-interest">—</div>
-                    </div>
-                    <div class="result-stat result-stat--full">
-                      <div class="stat-label">Total Cost</div>
-                      <div class="stat-value stat-value--total" id="total-cost">—</div>
-                    </div>
-                  </div>
-
-                  <div class="breakdown">
-                    <div class="breakdown-bar" role="img" aria-label="Principal vs interest breakdown">
-                      <div class="bar-segment bar-segment--principal" id="bar-principal" style="width: 82%"></div>
-                      <div class="bar-segment bar-segment--interest" id="bar-interest" style="width: 18%"></div>
-                    </div>
-                    <div class="breakdown-legend" aria-hidden="true">
-                      <span class="legend-item">
-                        <span class="legend-dot legend-dot--principal"></span>
-                        Principal
-                      </span>
-                      <span class="legend-item">
-                        <span class="legend-dot legend-dot--interest"></span>
-                        Interest
-                      </span>
-                    </div>
-                  </div>
-
-                </div><!-- /calc-results -->
-
-              </div><!-- /calc-layout -->
-            </div><!-- /car-payment-panel -->
-
-            <!-- ── Panel 2: Max Budget (reverse calculator) ── -->
-            <div class="calc-panel" id="max-budget-panel" role="tabpanel">
-              <div class="calc-layout">
-
-                <!-- INPUTS -->
-                <div class="calc-inputs">
-
-                  <div class="field">
-                    <label for="mb-monthly-payment">Monthly Payment I Can Afford</label>
-                    <div class="input-group">
-                      <span class="input-addon" aria-hidden="true">$</span>
-                      <input
-                        type="number" id="mb-monthly-payment"
-                        min="0" step="10" value="500"
-                        placeholder="500"
-                        aria-label="Monthly payment you can afford">
-                    </div>
-                  </div>
-
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="mb-down-payment">Down Payment</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input
-                          type="number" id="mb-down-payment"
-                          min="0" step="100" value="3000"
-                          placeholder="0">
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="mb-trade-in">Trade-in Value</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input
-                          type="number" id="mb-trade-in"
-                          min="0" step="100" value="0"
-                          placeholder="0">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="mb-tax-rate">Sales Tax</label>
-                      <div class="input-group">
-                        <input
-                          type="number" id="mb-tax-rate"
-                          min="0" max="20" step="0.1" value="6.0"
-                          placeholder="0.0">
-                        <span class="input-addon input-addon--suffix" aria-hidden="true">%</span>
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label for="mb-apr">Interest Rate (APR)</label>
-                      <div class="input-group">
-                        <input
-                          type="number" id="mb-apr"
-                          min="0" max="30" step="0.1" value="6.9"
-                          placeholder="0.0">
-                        <span class="input-addon input-addon--suffix" aria-hidden="true">%</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="field">
-                    <label>Loan Term</label>
-                    <div class="term-buttons" id="mb-term-buttons" role="group" aria-label="Select loan term">
-                      <button class="term-btn mb-term-btn" data-months="24" type="button">2 yr</button>
-                      <button class="term-btn mb-term-btn" data-months="36" type="button">3 yr</button>
-                      <button class="term-btn mb-term-btn" data-months="48" type="button">4 yr</button>
-                      <button class="term-btn mb-term-btn active" data-months="60" type="button">5 yr</button>
-                      <button class="term-btn mb-term-btn" data-months="72" type="button">6 yr</button>
-                      <button class="term-btn mb-term-btn" data-months="84" type="button">7 yr</button>
-                    </div>
-                  </div>
-
-                </div><!-- /calc-inputs -->
-
-                <!-- RESULTS -->
-                <div class="calc-results" aria-live="polite" aria-label="Max budget results">
-
-                  <div class="result-primary">
-                    <div class="result-label">Max Vehicle Price</div>
-                    <div class="result-amount" id="mb-max-price">—</div>
-                    <div class="result-sublabel">maximum you can afford</div>
-                  </div>
-
-                  <div class="result-divider"></div>
-
-                  <div class="result-stats">
-                    <div class="result-stat">
-                      <div class="stat-label">Loan Amount</div>
-                      <div class="stat-value" id="mb-loan-amount">—</div>
-                    </div>
-                    <div class="result-stat">
-                      <div class="stat-label">Total Interest</div>
-                      <div class="stat-value" id="mb-total-interest">—</div>
-                    </div>
-                    <div class="result-stat result-stat--full">
-                      <div class="stat-label">Total Cost</div>
-                      <div class="stat-value stat-value--total" id="mb-total-cost">—</div>
-                    </div>
-                  </div>
-
-                  <div class="breakdown">
-                    <div class="breakdown-bar" role="img" aria-label="Principal vs interest breakdown">
-                      <div class="bar-segment bar-segment--principal" id="mb-bar-principal" style="width: 82%"></div>
-                      <div class="bar-segment bar-segment--interest" id="mb-bar-interest" style="width: 18%"></div>
-                    </div>
-                    <div class="breakdown-legend" aria-hidden="true">
-                      <span class="legend-item">
-                        <span class="legend-dot legend-dot--principal"></span>
-                        Principal
-                      </span>
-                      <span class="legend-item">
-                        <span class="legend-dot legend-dot--interest"></span>
-                        Interest
-                      </span>
-                    </div>
-                  </div>
-
-                </div><!-- /calc-results -->
-
-              </div><!-- /calc-layout -->
-            </div><!-- /max-budget-panel -->
-
-          </article><!-- /auto-loan -->
-
-          <!-- ── Mortgage Calculator ── -->
-          <article class="calc-card" id="mortgage">
-
-            <div class="calc-card-header">
+            <div class="hub-card-content">
               <h3>Mortgage</h3>
-              <p>Estimate your monthly payment, total cost, and payoff schedule</p>
+              <p>Monthly payment, amortization schedule, extra payments, and payoff date</p>
             </div>
+            <span class="hub-card-arrow" aria-hidden="true">→</span>
+          </a>
 
-            <div class="calc-layout">
+        </div>
+      </div>
+    </section>
 
-              <!-- INPUTS -->
-              <div class="calc-inputs">
+    <!-- ── UNIT CONVERSION SECTION (coming soon) ── -->
+    <section id="unit-conversion" class="section section--dim">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Unit Conversion <span class="coming-soon-badge">Coming Soon</span></h2>
+          <p>Length, weight, temperature, volume and more</p>
+        </div>
+      </div>
+    </section>
 
-                <!-- Home Price -->
-                <div class="field">
-                  <label for="mort-home-price">Home Price</label>
-                  <div class="input-group">
-                    <span class="input-addon" aria-hidden="true">$</span>
-                    <input type="number" id="mort-home-price" value="400000" min="0" step="1000" placeholder="400000">
-                  </div>
-                </div>
-
-                <!-- Down Payment + % / $ toggle -->
-                <div class="field">
-                  <label for="mort-down-payment">Down Payment</label>
-                  <div class="input-group">
-                    <span class="input-addon" id="mort-dp-prefix" aria-hidden="true">%</span>
-                    <input type="number" id="mort-down-payment" value="20" min="0" step="0.5" placeholder="20">
-                    <div class="mode-toggle" role="group" aria-label="Down payment unit">
-                      <button class="mode-toggle-btn mort-dp-mode active" data-mode="pct" type="button" aria-pressed="true">%</button>
-                      <button class="mode-toggle-btn mort-dp-mode" data-mode="dollar" type="button" aria-pressed="false">$</button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Loan Term -->
-                <div class="field">
-                  <label>Loan Term</label>
-                  <div class="term-buttons mort-term-buttons" role="group" aria-label="Select loan term">
-                    <button class="term-btn mort-term-btn" data-term="10" type="button">10 yr</button>
-                    <button class="term-btn mort-term-btn" data-term="15" type="button">15 yr</button>
-                    <button class="term-btn mort-term-btn" data-term="20" type="button">20 yr</button>
-                    <button class="term-btn mort-term-btn" data-term="25" type="button">25 yr</button>
-                    <button class="term-btn mort-term-btn active" data-term="30" type="button">30 yr</button>
-                  </div>
-                </div>
-
-                <!-- Interest Rate -->
-                <div class="field">
-                  <label for="mort-interest-rate">Interest Rate (APR)</label>
-                  <div class="input-group">
-                    <input type="number" id="mort-interest-rate" value="6.5" min="0" max="30" step="0.05" placeholder="6.5">
-                    <span class="input-addon input-addon--suffix" aria-hidden="true">%</span>
-                  </div>
-                </div>
-
-                <!-- Start Month + Year -->
-                <div class="field-row">
-                  <div class="field">
-                    <label for="mort-start-month">Loan Starts</label>
-                    <div class="input-group">
-                      <select id="mort-start-month" aria-label="Start month">
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3" selected>March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label for="mort-start-year">&nbsp;</label>
-                    <div class="input-group">
-                      <input type="number" id="mort-start-year" value="2026" min="2000" max="2100" step="1" placeholder="2026">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- ── Taxes & Costs ── -->
-                <button class="collapse-hd" id="mort-costs-toggle" type="button"
-                        aria-expanded="true" aria-controls="mort-costs-body">
-                  <span>Taxes &amp; Costs</span>
-                  <span class="collapse-icon" aria-hidden="true">▾</span>
-                </button>
-                <div class="collapse-body" id="mort-costs-body">
-
-                  <!-- Property Tax + % / $ toggle -->
-                  <div class="field">
-                    <label for="mort-prop-tax">Property Tax <span class="field-hint">(annual)</span></label>
-                    <div class="input-group">
-                      <span class="input-addon" id="mort-tax-prefix" aria-hidden="true">%</span>
-                      <input type="number" id="mort-prop-tax" value="1.2" min="0" step="0.05" placeholder="1.2">
-                      <div class="mode-toggle" role="group" aria-label="Property tax unit">
-                        <button class="mode-toggle-btn mort-tax-mode active" data-mode="pct" type="button" aria-pressed="true">%</button>
-                        <button class="mode-toggle-btn mort-tax-mode" data-mode="dollar" type="button" aria-pressed="false">$</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Home Insurance + PMI -->
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="mort-home-ins">Home Insurance <span class="field-hint">(annual)</span></label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-home-ins" value="1500" min="0" step="100" placeholder="1500">
-                      </div>
-                    </div>
-                    <div class="field">
-                      <label for="mort-pmi">PMI <span class="field-hint">(annual)</span></label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-pmi" value="0" min="0" step="50" placeholder="0">
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- HOA + Other -->
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="mort-hoa">HOA Fee <span class="field-hint">(monthly)</span></label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-hoa" value="0" min="0" step="25" placeholder="0">
-                      </div>
-                    </div>
-                    <div class="field">
-                      <label for="mort-other">Other Costs <span class="field-hint">(annual)</span></label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-other" value="0" min="0" step="100" placeholder="0">
-                      </div>
-                    </div>
-                  </div>
-
-                </div><!-- /mort-costs-body -->
-
-                <!-- ── Extra Payments ── -->
-                <button class="collapse-hd" id="mort-extra-toggle" type="button"
-                        aria-expanded="false" aria-controls="mort-extra-body">
-                  <span>Extra Payments</span>
-                  <span class="collapse-icon" aria-hidden="true">▾</span>
-                </button>
-                <div class="collapse-body" id="mort-extra-body" hidden>
-
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="mort-extra-monthly">Extra Monthly</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-extra-monthly" value="0" min="0" step="50" placeholder="0">
-                      </div>
-                    </div>
-                    <div class="field">
-                      <label for="mort-extra-yearly">Extra Yearly</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-extra-yearly" value="0" min="0" step="100" placeholder="0">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="field-row">
-                    <div class="field">
-                      <label for="mort-extra-once">One-time Payment</label>
-                      <div class="input-group">
-                        <span class="input-addon" aria-hidden="true">$</span>
-                        <input type="number" id="mort-extra-once" value="0" min="0" step="500" placeholder="0">
-                      </div>
-                    </div>
-                    <div class="field">
-                      <label for="mort-extra-once-mo">At Month #</label>
-                      <div class="input-group">
-                        <input type="number" id="mort-extra-once-mo" value="12" min="1" max="360" step="1" placeholder="12">
-                      </div>
-                    </div>
-                  </div>
-
-                </div><!-- /mort-extra-body -->
-
-              </div><!-- /calc-inputs -->
-
-              <!-- RESULTS -->
-              <div class="calc-results" aria-live="polite" aria-label="Mortgage calculation results">
-
-                <!-- Primary -->
-                <div class="result-primary">
-                  <div class="result-label">Monthly P&amp;I Payment</div>
-                  <div class="result-amount" id="mort-monthly-pi">—</div>
-                  <div class="result-sublabel" id="mort-monthly-total-wrap">
-                    <span id="mort-monthly-total">—</span> total with taxes &amp; costs
-                  </div>
-                </div>
-
-                <!-- Breakdown table -->
-                <div id="mort-bd-section">
-                  <table class="mort-bd-table" aria-label="Monthly payment breakdown">
-                    <thead>
-                      <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Monthly</th>
-                        <th scope="col">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="bd-pi">
-                        <td>Principal &amp; Interest</td>
-                        <td id="mort-bd-pi-mo">—</td>
-                        <td id="mort-bd-pi-tot">—</td>
-                      </tr>
-                      <tr id="mort-bd-tax-row">
-                        <td>Property Tax</td>
-                        <td id="mort-bd-tax-mo">—</td>
-                        <td id="mort-bd-tax-tot">—</td>
-                      </tr>
-                      <tr id="mort-bd-ins-row">
-                        <td>Home Insurance</td>
-                        <td id="mort-bd-ins-mo">—</td>
-                        <td id="mort-bd-ins-tot">—</td>
-                      </tr>
-                      <tr id="mort-bd-pmi-row">
-                        <td>PMI</td>
-                        <td id="mort-bd-pmi-mo">—</td>
-                        <td id="mort-bd-pmi-tot">—</td>
-                      </tr>
-                      <tr id="mort-bd-hoa-row">
-                        <td>HOA Fee</td>
-                        <td id="mort-bd-hoa-mo">—</td>
-                        <td id="mort-bd-hoa-tot">—</td>
-                      </tr>
-                      <tr id="mort-bd-other-row">
-                        <td>Other Costs</td>
-                        <td id="mort-bd-other-mo">—</td>
-                        <td id="mort-bd-other-tot">—</td>
-                      </tr>
-                      <tr class="bd-total">
-                        <td>Total Out-of-Pocket</td>
-                        <td id="mort-bd-total-mo">—</td>
-                        <td id="mort-bd-total-tot">—</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Principal / Interest bar -->
-                <div class="breakdown">
-                  <div class="breakdown-bar" role="img" aria-label="Principal vs interest breakdown">
-                    <div class="bar-segment bar-segment--principal" id="mort-bar-principal" style="width:50%"></div>
-                    <div class="bar-segment bar-segment--interest"  id="mort-bar-interest"  style="width:50%"></div>
-                  </div>
-                  <div class="breakdown-legend" aria-hidden="true">
-                    <span class="legend-item"><span class="legend-dot legend-dot--principal"></span> Principal</span>
-                    <span class="legend-item"><span class="legend-dot legend-dot--interest"></span> Interest</span>
-                  </div>
-                </div>
-
-                <!-- Summary stats -->
-                <div class="result-stats">
-                  <div class="result-stat">
-                    <div class="stat-label">Home Price</div>
-                    <div class="stat-value" id="mort-out-home-price">—</div>
-                  </div>
-                  <div class="result-stat">
-                    <div class="stat-label">Down Payment</div>
-                    <div class="stat-value" id="mort-out-down">—</div>
-                  </div>
-                  <div class="result-stat">
-                    <div class="stat-label">Loan Amount</div>
-                    <div class="stat-value" id="mort-out-loan">—</div>
-                  </div>
-                  <div class="result-stat">
-                    <div class="stat-label">Total Payments (P&amp;I)</div>
-                    <div class="stat-value" id="mort-out-pi-total">—</div>
-                  </div>
-                  <div class="result-stat result-stat--full">
-                    <div class="stat-label">Total Interest</div>
-                    <div class="stat-value stat-value--total" id="mort-out-interest">—</div>
-                  </div>
-                  <div class="result-stat result-stat--full">
-                    <div class="stat-label">Payoff Date</div>
-                    <div class="stat-value" id="mort-out-payoff">—</div>
-                  </div>
-                </div>
-
-              </div><!-- /calc-results -->
-
-            </div><!-- /calc-layout -->
-
-            <!-- ── Amortization Schedule (full width) ── -->
-            <div class="amort-section">
-              <div class="amort-hd">
-                <h4>Amortization Schedule</h4>
-                <div class="amort-view-grp" role="group" aria-label="Schedule view">
-                  <button class="amort-view-btn active" id="mort-annual-btn" type="button">Annual</button>
-                  <button class="amort-view-btn" id="mort-monthly-btn" type="button">Monthly</button>
-                </div>
-              </div>
-              <div class="amort-wrap">
-                <table class="amort-table" aria-label="Amortization schedule">
-                  <thead>
-                    <tr>
-                      <th scope="col" id="mort-amort-col-lbl">Year</th>
-                      <th scope="col">Principal Paid</th>
-                      <th scope="col">Interest Paid</th>
-                      <th scope="col">Total Paid</th>
-                      <th scope="col">Balance</th>
-                    </tr>
-                  </thead>
-                  <tbody id="mort-amort-body"></tbody>
-                </table>
-              </div>
-            </div>
-
-          </article><!-- /mortgage -->
-
-        </div><!-- /calc-grid -->
-      </div><!-- /container -->
-    </section><!-- /finance -->
+    <!-- ── CURRENCY SECTION (coming soon) ── -->
+    <section id="currency" class="section section--dim">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Currency <span class="coming-soon-badge">Coming Soon</span></h2>
+          <p>Live exchange rates between world currencies</p>
+        </div>
+      </div>
+    </section>
 
   </main>
 
@@ -668,8 +114,5 @@
     </div>
   </footer>
 
-  <script src="js/car-payment.js"></script>
-  <script src="js/max-budget.js"></script>
-  <script src="js/mortgage.js"></script>
 </body>
 </html>

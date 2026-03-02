@@ -10,23 +10,7 @@
 
 let selectedTerm = 60; // months — matches the default "5 yr" button
 
-// ── Formatters ───────────────────────────────────────────────
-
-const fmtCurrency = (n) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(n);
-
-const fmtCurrencyRounded = (n) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(n);
+// Note: fmtCurrency / fmtCurrencyRounded are defined in js/utils.js (loaded first)
 
 // ── Helpers ──────────────────────────────────────────────────
 

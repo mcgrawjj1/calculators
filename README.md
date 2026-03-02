@@ -25,7 +25,7 @@ A collection of practical, clean calculators for everyday decisions. Built with 
 
 ## Project Overview
 
-CalcHub is a single-page web application that hosts a growing library of useful calculators organized into sections (Finance, Unit Conversion, Currency, etc.). The goal is a fast, distraction-free tool that works well on any device and is simple enough that any future changes can be made without a build system.
+CalcHub is a multi-page static web application that hosts a growing library of useful calculators organized into sections (Finance, Unit Conversion, Currency, etc.). The hub page (`index.html`) lists all available calculators by category; clicking a card opens that calculator's own dedicated page. The goal is a fast, distraction-free tool that works well on any device and is simple enough that any future changes can be made without a build system.
 
 **Design philosophy:** Minimalist and functional. No animations for their own sake, no heavy frameworks, no unnecessary complexity. The design serves the math.
 
@@ -38,7 +38,8 @@ CalcHub is a single-page web application that hosts a growing library of useful 
 - **Accessible markup** — semantic HTML5, `aria-label`, `aria-live` regions for screen readers
 - **No dependencies** — loads fast, works offline after first visit (no npm, no bundler)
 - **Sticky frosted-glass header** — navigation always visible while scrolling
-- **Extensible architecture** — adding a new calculator requires touching only two files
+- **Multi-page architecture** — each calculator lives on its own dedicated page; the hub links them together
+- **Extensible architecture** — adding a new calculator means creating one HTML page and one JS file
 
 ---
 
@@ -71,16 +72,19 @@ No `npm install`, no build step. It just works.
 ```
 calculators/
 │
-├── index.html              # Single-page app — all sections live here
+├── index.html              # Hub page — Finance cards linking to calculator pages
+├── auto-loan.html          # Auto Loan dedicated page (Car Payment + Monthly Payment tabs)
+├── mortgage.html           # Mortgage dedicated page (full calculator + amortization table)
 │
 ├── css/
 │   └── style.css           # All styles; design tokens defined as CSS custom properties
 │                             at the top of the file under :root { }
 │
 ├── js/
-│   └── car-payment.js      # Car Payment calculator logic (Tab 1 of Auto Loan card)
-│   └── max-budget.js       # Max Budget reverse calculator + tab switching (Tab 2)
-│   └── mortgage.js         # Mortgage calculator — payment, breakdown, amortization
+│   └── utils.js            # Shared formatters (fmtCurrency, fmtCurrencyRounded) — load first
+│   └── car-payment.js      # Car Payment tab: forward amortization
+│   └── max-budget.js       # Monthly Payment tab: reverse amortization + tab switching
+│   └── mortgage.js         # Mortgage: payment, costs, extra payments, amortization table
 │   └── ...                 # Future calculators each get their own file
 │
 ├── README.md               # This file — human-readable project documentation
@@ -89,12 +93,30 @@ calculators/
 └── .gitignore              # Ignores .DS_Store, editor files, logs
 ```
 
+### Page architecture
+
+The site uses a **hub-and-spoke** model:
+
+| Page | Role |
+|---|---|
+| `index.html` | Hub — displays all calculator categories; each calculator shown as a clickable card that links to its own page. No calculator logic here. |
+| `auto-loan.html` | Dedicated Auto Loan page — loads `utils.js`, `car-payment.js`, `max-budget.js` |
+| `mortgage.html` | Dedicated Mortgage page — loads `utils.js`, `mortgage.js` |
+
+Each calculator page includes:
+- The shared header and footer
+- A breadcrumb trail (Home / Finance / Calculator Name) and page title in `.page-hero`
+- Only the scripts it needs (utils.js always loaded first)
+
 ### Key file roles
 
 | File | Purpose |
 |---|---|
-| `index.html` | Page structure, all calculator HTML, nav links. Add new calc cards here. |
+| `index.html` | Hub page. Shows Finance section with card links. No scripts. |
+| `auto-loan.html` | Auto Loan calculator page (both tabs). |
+| `mortgage.html` | Mortgage calculator page (full calculator + amortization table). |
 | `css/style.css` | Every style rule. CSS custom properties at top act as the design token system. |
+| `js/utils.js` | Shared currency formatters — must be loaded before any calculator script. |
 | `js/car-payment.js` | Car Payment tab: reads inputs, runs forward amortization, writes to DOM. |
 | `js/max-budget.js` | Monthly Payment tab: tab switching logic + reverse amortization. |
 | `js/mortgage.js` | Mortgage: payment, optional costs, extra payments, amortization table. |
@@ -165,14 +187,14 @@ Kept intentionally subtle — 6–8% opacity so cards lift off the page without 
 
 ## Calculators
 
-### Auto Loan (tabbed card)
+### Auto Loan (tabbed)
 
-**Card ID:** `#auto-loan`
+**Page:** `auto-loan.html`
 **Section:** Finance
 **Tabs:** Car Payment · Monthly Payment (reverse)
-**Tab switching:** `js/max-budget.js` — `initTabs()` toggles `.active` on `.calc-tab` elements and `hidden` on `.calc-panel` elements.
+**Tab switching:** `js/max-budget.js` — `initTabs()` toggles `.active` on `.calc-tab` elements and `.is-active` on `.calc-panel` elements.
 
-The Auto Loan card hosts two calculators in a tabbed layout. Both tabs share the same visual structure (inputs left, results right) but solve the loan equation in opposite directions.
+The Auto Loan page hosts two calculators in a tabbed layout. Both tabs share the same visual structure (inputs left, results right) but solve the loan equation in opposite directions.
 
 ---
 
@@ -303,7 +325,7 @@ Same as Tab 1: tax applies to `(price − tradeIn)`, rolled into the financed pr
 
 ### Mortgage Calculator
 
-**Card ID:** `#mortgage`
+**Page:** `mortgage.html`
 **Section:** Finance
 **File:** `js/mortgage.js`
 
@@ -388,51 +410,86 @@ Calendar year is determined from the start month/year: row month `n` maps to `st
 
 ## How to Add a New Calculator
 
-Follow these steps to add a new calculator card to an existing section (e.g., Finance), or add a whole new section.
+Follow these steps to add a new calculator to an existing section (e.g., Finance), or add a whole new section.
 
-### 1. Add the HTML card in `index.html`
+### 1. Add a hub card in `index.html`
 
-Copy this template and place it inside `.calc-grid` in the appropriate `<section>`:
+Inside the `.hub-grid` in the appropriate `<section>`, add a card that links to the new page:
 
 ```html
-<article class="calc-card" id="my-calculator">
-
-  <div class="calc-card-header">
+<a href="my-calculator.html" class="hub-card">
+  <div class="hub-card-icon" aria-hidden="true">
+    <!-- SVG icon here -->
+  </div>
+  <div class="hub-card-content">
     <h3>Calculator Name</h3>
     <p>One-line description of what it calculates</p>
   </div>
+  <span class="hub-card-arrow" aria-hidden="true">→</span>
+</a>
+```
 
-  <div class="calc-layout">
+### 2. Create the dedicated calculator page
 
-    <!-- INPUTS (left pane) -->
-    <div class="calc-inputs">
+Create `my-calculator.html`. Use `auto-loan.html` or `mortgage.html` as a template. Key structure:
 
-      <div class="field">
-        <label for="my-input">Field Label</label>
-        <div class="input-group">
-          <span class="input-addon" aria-hidden="true">$</span>
-          <input type="number" id="my-input" value="0" min="0" step="1">
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- meta, fonts, css/style.css -->
+  <title>My Calculator — CalcHub</title>
+</head>
+<body>
+  <!-- Shared header (logo href="index.html") -->
+  <div class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+        <a href="index.html#finance">Finance</a>
+        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+        <span>My Calculator</span>
+      </nav>
+      <h1 class="page-title">My Calculator</h1>
+    </div>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="calc-grid">
+          <article class="calc-card" id="my-calculator">
+            <div class="calc-layout">
+              <!-- INPUTS (left pane) -->
+              <div class="calc-inputs">
+                <div class="field">
+                  <label for="my-input">Field Label</label>
+                  <div class="input-group">
+                    <span class="input-addon" aria-hidden="true">$</span>
+                    <input type="number" id="my-input" value="0" min="0" step="1">
+                  </div>
+                </div>
+              </div>
+              <!-- RESULTS (right pane) -->
+              <div class="calc-results" aria-live="polite">
+                <div class="result-primary">
+                  <div class="result-label">Primary Result</div>
+                  <div class="result-amount" id="my-result">—</div>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
+    </section>
+  </main>
 
-      <!-- Add more .field elements as needed -->
-
-    </div>
-
-    <!-- RESULTS (right pane, green-tinted background) -->
-    <div class="calc-results" aria-live="polite">
-
-      <div class="result-primary">
-        <div class="result-label">Primary Result</div>
-        <div class="result-amount" id="my-result">—</div>
-      </div>
-
-      <!-- Add .result-stats, .breakdown, etc. as needed -->
-
-    </div>
-
-  </div>
-</article>
+  <!-- Shared footer -->
+  <script src="js/utils.js"></script>
+  <script src="js/my-calculator.js"></script>
+</body>
+</html>
 ```
 
 **Suffix input** (e.g., percentage): swap the `input-addon` to the right side and add the `--suffix` modifier:
@@ -453,14 +510,14 @@ Copy this template and place it inside `.calc-grid` in the appropriate `<section
 </div>
 ```
 
-### 2. Create the JavaScript file
+### 3. Create the JavaScript file
 
-Create `js/my-calculator.js`. Follow this structure:
+Create `js/my-calculator.js`. Always load `js/utils.js` first on the HTML page — it provides `fmtCurrency` and `fmtCurrencyRounded`. Follow this structure:
 
 ```javascript
 'use strict';
+// Note: fmtCurrency / fmtCurrencyRounded defined in js/utils.js (loaded first)
 
-// Helper — reads a number input, returns 0 if empty/invalid
 function getVal(id) {
   return parseFloat(document.getElementById(id).value) || 0;
 }
@@ -468,30 +525,20 @@ function getVal(id) {
 function calculate() {
   const input = getVal('my-input');
   // ... your formula here ...
-  document.getElementById('my-result').textContent = formatResult(result);
+  document.getElementById('my-result').textContent = fmtCurrency(result);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('my-input').addEventListener('input', calculate);
-  calculate(); // run once on load with default values
+  calculate();
 });
-```
-
-### 3. Reference the script in `index.html`
-
-Add a `<script>` tag at the bottom of `index.html`, before `</body>`:
-
-```html
-  <script src="js/car-payment.js"></script>
-  <script src="js/my-calculator.js"></script>  <!-- add this line -->
-</body>
 ```
 
 ### 4. Add a new section (if needed)
 
 If this calculator belongs to a new category (e.g., Unit Conversions):
 
-**In `index.html`** — add after the Finance section:
+**In `index.html`** — replace or convert the Coming Soon placeholder:
 
 ```html
 <section id="unit-conversion" class="section">
@@ -500,26 +547,31 @@ If this calculator belongs to a new category (e.g., Unit Conversions):
       <h2>Unit Conversion</h2>
       <p>Convert between common units of measurement</p>
     </div>
-    <div class="calc-grid">
-      <!-- calculator cards go here -->
+    <div class="hub-grid">
+      <!-- hub cards go here -->
     </div>
   </div>
 </section>
 ```
 
-**In the `<nav>`** — add a link:
+**In the `<nav>`** — update the dimmed link:
 
 ```html
-<a href="#unit-conversion" class="nav-link">Unit Conversion</a>
+<a href="index.html#unit-conversion" class="nav-link">Unit Conversion</a>
 ```
 
-Remove the `nav-link--dim` class and `aria-disabled` attribute from the placeholder link, or replace it.
+Remove the `nav-link--dim` class and `aria-disabled` attribute once the section is live.
 
-### 5. Update documentation
+### 5. Verify mobile responsiveness
+
+Check the new page at all three breakpoints (800px, 600px, 440px). See the [responsive breakpoints table](#responsive-breakpoints) in the Design System section.
+
+### 6. Update documentation
 
 - Add the new calculator to `README.md` under [Calculators](#calculators)
 - Add an entry to `CHANGELOG.md` under the `[Unreleased]` section
 - Update the roadmap checkbox in both `README.md` and `CLAUDE.md`
+- Update the file structure in `README.md` and `CLAUDE.md`
 
 ---
 

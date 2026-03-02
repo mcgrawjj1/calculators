@@ -49,7 +49,7 @@ function initTabs() {
 }
 
 // ── Helpers ──────────────────────────────────────────────────
-// Note: fmtCurrency and fmtCurrencyRounded are defined in car-payment.js (loaded first)
+// Note: fmtCurrency and fmtCurrencyRounded are defined in js/utils.js (loaded first)
 
 function getVal(id) {
   return parseFloat(document.getElementById(id).value) || 0;
