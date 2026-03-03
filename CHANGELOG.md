@@ -13,6 +13,20 @@ Versions follow [Semantic Versioning](https://semver.org/):
 ## [Unreleased]
 
 ### Added
+- **Roth vs. Traditional IRA Calculator** — new card in Finance section (`js/roth-ira.js`, `roth-ira.html`)
+  - Inputs: Annual Contribution, Current Age, Retirement Age, Annual Return %, Current Marginal Tax Rate %, Expected Retirement Tax Rate %, Starting Balance
+  - Outputs: Traditional ending balance + after-tax value, Roth balance (all after-tax), winner callout, tax-drag breakdown bar
+  - Formula: Equal pre-tax cost comparison — Traditional gets full $C/yr; Roth gets $C×(1−currentRate)/yr; winner = higher after-tax value at retirement
+  - Year-by-year projection table: Year, Age, Traditional Balance, Roth Balance, Roth Advantage (negative values in orange)
+  - New CSS: `.result-comparison` 2-col grid, `.result-account`, `.result-account--winner`, `.result-winner` callout banner
+- **FIRE Number Calculator** — new card in Finance section (`js/fire-number.js`, `fire-number.html`)
+  - Inputs: Annual Spending in Retirement, Safe Withdrawal Rate (default 4%), Annual Return %, Current Savings, Annual Contribution, Current Age
+  - Outputs: FIRE Number (target portfolio), Years to FIRE, Age at FIRE, Current Progress %, Monthly Savings implied, progress bar
+  - Formula: FIRE Number = Spending / SWR; iterates year-by-year compounding until balance ≥ target (max 100 years)
+  - Year-by-year projection table: Year, Age, Portfolio Balance, Annual Contribution, Progress %; FIRE row highlighted green
+  - New CSS: `.fire-progress-bar`, `.fire-progress-fill`, `.fire-row` highlight rule
+
+
 - **Multi-page architecture** — each calculator now lives on its own dedicated HTML page
   - `index.html` rebuilt as hub: Finance section with clickable calculator cards; Coming Soon sections (Unit Conversion, Currency) shown dimmed
   - `auto-loan.html` — dedicated Auto Loan calculator page (Car Payment + Monthly Payment tabs)

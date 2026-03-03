@@ -17,6 +17,8 @@ A collection of practical, clean calculators for everyday decisions. Built with 
 6. [Calculators](#calculators)
    - [Car Payment](#car-payment-calculator)
    - [Mortgage](#mortgage-calculator)
+   - [Roth vs. Traditional IRA](#roth-vs-traditional-ira-calculator)
+   - [FIRE Number](#fire-number-calculator)
 7. [How to Add a New Calculator](#how-to-add-a-new-calculator)
 8. [Deployment](#deployment)
 9. [Roadmap](#roadmap)
@@ -75,6 +77,8 @@ calculators/
 ├── index.html              # Hub page — Finance cards linking to calculator pages
 ├── auto-loan.html          # Auto Loan dedicated page (Car Payment + Monthly Payment tabs)
 ├── mortgage.html           # Mortgage dedicated page (full calculator + amortization table)
+├── roth-ira.html           # Roth vs. Traditional IRA comparison page
+├── fire-number.html        # FIRE Number calculator page
 │
 ├── css/
 │   └── style.css           # All styles; design tokens defined as CSS custom properties
@@ -85,6 +89,8 @@ calculators/
 │   └── car-payment.js      # Car Payment tab: forward amortization
 │   └── max-budget.js       # Monthly Payment tab: reverse amortization + tab switching
 │   └── mortgage.js         # Mortgage: payment, costs, extra payments, amortization table
+│   └── roth-ira.js         # Roth vs. Traditional IRA: year-by-year projection + comparison
+│   └── fire-number.js      # FIRE Number: target calculation + year-by-year projection
 │   └── ...                 # Future calculators each get their own file
 │
 ├── README.md               # This file — human-readable project documentation
@@ -115,11 +121,15 @@ Each calculator page includes:
 | `index.html` | Hub page. Shows Finance section with card links. No scripts. |
 | `auto-loan.html` | Auto Loan calculator page (both tabs). |
 | `mortgage.html` | Mortgage calculator page (full calculator + amortization table). |
+| `roth-ira.html` | Roth vs. Traditional IRA comparison page (year-by-year table). |
+| `fire-number.html` | FIRE Number calculator page (target + year-by-year projection). |
 | `css/style.css` | Every style rule. CSS custom properties at top act as the design token system. |
 | `js/utils.js` | Shared currency formatters — must be loaded before any calculator script. |
 | `js/car-payment.js` | Car Payment tab: reads inputs, runs forward amortization, writes to DOM. |
 | `js/max-budget.js` | Monthly Payment tab: tab switching logic + reverse amortization. |
 | `js/mortgage.js` | Mortgage: payment, optional costs, extra payments, amortization table. |
+| `js/roth-ira.js` | Roth vs. Traditional IRA: year-by-year balance projection, winner callout. |
+| `js/fire-number.js` | FIRE Number: target portfolio, years to FIRE, progress bar, year-by-year table. |
 | `CLAUDE.md` | Instructions and context for Claude AI — keeps future sessions consistent. |
 | `CHANGELOG.md` | Running record of every version and what changed. Updated with every release. |
 
@@ -408,6 +418,112 @@ Calendar year is determined from the start month/year: row month `n` maps to `st
 
 ---
 
+### Roth vs. Traditional IRA Calculator
+
+**Page:** `roth-ira.html`
+**Section:** Finance
+**File:** `js/roth-ira.js`
+
+Compares the after-tax retirement value of a Roth IRA vs. a Traditional IRA on an equal pre-tax cost basis, and shows a year-by-year balance projection for both accounts.
+
+#### Inputs
+
+| Field | ID | Type | Default | Notes |
+|---|---|---|---|---|
+| Annual Contribution | `roth-contribution` | number | $7,000 | Dollar amount contributed each year |
+| Current Age | `roth-current-age` | number | 30 | Used to calculate number of investment years |
+| Retirement Age | `roth-retire-age` | number | 65 | When withdrawals begin |
+| Expected Annual Return | `roth-return` | number | 7% | Pre-tax nominal annual return |
+| Current Marginal Tax Rate | `roth-current-tax` | number | 22% | Federal + state marginal rate today |
+| Expected Retirement Tax Rate | `roth-retire-tax` | number | 15% | Effective rate applied to Traditional withdrawals |
+| Starting Balance | `roth-starting-balance` | number | $0 | Existing IRA balance (optional) |
+
+#### Outputs
+
+| Field | ID | Format |
+|---|---|---|
+| Traditional Ending Balance | `roth-trad-balance` | `$542,000` (pre-tax) |
+| Traditional After-Tax Value | `roth-trad-aftertax` | `$460,700` |
+| Roth Ending Balance | `roth-roth-balance` | `$423,000` (all after-tax) |
+| Winner Callout | `roth-winner` | Text — "Roth saves you $X,XXX more" or equivalent |
+| Tax-drag bar | `bar-trad-kept` / `bar-trad-tax` | Animated width % |
+| Year-by-year table | `roth-table-body` | Year, Age, Traditional Balance, Roth Balance, Roth Advantage |
+
+#### Formula
+
+Equal pre-tax cost comparison — Traditional receives the full contribution, Roth receives the after-tax equivalent:
+
+```
+years = retireAge − currentAge
+r     = annualReturn / 100
+
+Traditional balance = startBal*(1+r)^n + C*[(1+r)^n − 1]/r
+Traditional after-tax = tradBalance * (1 − retirementTaxRate)
+
+Roth contribution per year = C * (1 − currentTaxRate)
+Roth balance = startBal*(1−currentTax)*(1+r)^n + C*(1−currentTax)*[(1+r)^n − 1]/r
+(No withdrawal tax on Roth)
+```
+
+**Winner logic:** The account with the higher after-tax value wins. Mathematically: if `currentTaxRate < retirementTaxRate` → Roth wins; if `currentTaxRate > retirementTaxRate` → Traditional wins; if equal → tie.
+
+#### Year-by-Year Table
+
+Tracks both balances each year from year 1 to `retireAge − currentAge`. "Roth Advantage" column = Roth Balance − Traditional After-Tax Value. Positive = Roth is ahead; negative (shown in orange) = Traditional is ahead.
+
+---
+
+### FIRE Number Calculator
+
+**Page:** `fire-number.html`
+**Section:** Finance
+**File:** `js/fire-number.js`
+
+Calculates the portfolio size needed for financial independence using the safe withdrawal rate (SWR), then iterates year-by-year to show how long until current savings + contributions reach that target.
+
+#### Inputs
+
+| Field | ID | Type | Default | Notes |
+|---|---|---|---|---|
+| Annual Spending in Retirement | `fire-spending` | number | $60,000 | Estimated yearly expenses in retirement |
+| Safe Withdrawal Rate | `fire-swr` | number | 4.0% | The "4% rule" from the Trinity Study |
+| Annual Return | `fire-return` | number | 8% | Expected portfolio growth rate pre-FIRE |
+| Current Savings | `fire-savings` | number | $50,000 | Current invested portfolio value |
+| Annual Savings Contribution | `fire-contribution` | number | $24,000 | Amount added to the portfolio each year |
+| Current Age | `fire-age` | number | 30 | Used to compute "Age at FIRE" |
+
+#### Outputs
+
+| Field | ID | Format |
+|---|---|---|
+| FIRE Number | `fire-number` | `$1,500,000` |
+| Years to FIRE | `fire-years` | `22 yrs` or `100+ yrs` |
+| Age at FIRE | `fire-age-at-fire` | `52` |
+| Current Progress | `fire-progress-pct` | `3.3%` |
+| Monthly Savings | `fire-monthly-savings` | `$2,000/mo` |
+| Progress bar | `fire-progress-fill` | Animated width % |
+| Year-by-year table | `fire-table-body` | Year, Age, Balance, Annual Contribution, Progress % |
+
+#### Formula
+
+```
+FIRE Number = Annual Spending / (SWR / 100)
+
+Year-by-year iteration (max 100 years):
+  balance = balance × (1 + r) + annualContribution
+  stop when balance ≥ FIRE Number
+
+Years to FIRE = iteration count when balance first crosses target
+Age at FIRE   = currentAge + yearsToFire
+Progress %    = currentSavings / FIRE Number × 100
+```
+
+#### Year-by-Year Table
+
+One row per year until the portfolio crosses the FIRE target. The final row (where the FIRE number is reached) is highlighted with a green background. If the target is not reached within 100 years, the table shows 100 rows and "100+ yrs" in the results.
+
+---
+
 ## How to Add a New Calculator
 
 Follow these steps to add a new calculator to an existing section (e.g., Finance), or add a whole new section.
@@ -612,6 +728,8 @@ git push
 - [x] Car Payment
 - [x] Monthly Payment / Max Budget (reverse auto loan)
 - [x] Mortgage — monthly payment, full amortization table, extra payment scenarios
+- [x] Roth vs. Traditional IRA — after-tax comparison with year-by-year projection
+- [x] FIRE Number — financial independence target + years to retirement
 - [ ] Savings Goal — how much to save monthly to reach a target
 - [ ] Loan Comparison — compare two loans side by side
 
