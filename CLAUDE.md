@@ -59,6 +59,8 @@ calculators/
     ├── car-payment.js ← Car Payment tab (forward amortization)
     ├── max-budget.js  ← Monthly Payment tab (reverse amortization) + tab switching
     ├── mortgage.js    ← Mortgage calculator + amortization table
+    ├── roth-ira.js    ← Roth vs. Traditional IRA comparison + year-by-year projection
+    ├── fire-number.js ← FIRE Number calculator + year-by-year projection
     └── ...            ← Future calculators get their own files
 ```
 
@@ -113,11 +115,27 @@ Every calculator and every section of this site **must be fully responsive**. Th
 **Outputs:** Monthly Payment (primary), Loan Amount, Total Interest, Total Cost, visual principal/interest bar
 **Behavior:** Recalculates live on every input change; default values show on load
 
+## Calculator: Roth vs. Traditional IRA (`js/roth-ira.js`)
+**Inputs:** Annual Contribution ($), Current Age, Retirement Age, Annual Return (%), Current Marginal Tax Rate (%), Expected Retirement Tax Rate (%), Starting Balance ($)
+**Formula:** Equal pre-tax cost comparison — Traditional: full $C/yr invested, taxed at retirementRate on withdrawal; Roth: $C×(1−currentRate)/yr invested, grows tax-free. Winner determined by which after-tax value is larger (simplifies to: currentRate vs retirementRate comparison)
+**Outputs:** Traditional Balance (pre-tax), Traditional After-Tax Value, Roth Balance, winner callout, tax-drag bar, year-by-year projection table (Year, Age, Trad Balance, Roth Balance, Roth Advantage)
+**CSS additions:** `.result-comparison` 2-col grid, `.result-account`, `.result-account--winner`, `.result-winner` callout
+**Behavior:** Recalculates live on every input; winner card highlighted green; negative Roth Advantage shown in orange
+
+## Calculator: FIRE Number (`js/fire-number.js`)
+**Inputs:** Annual Spending in Retirement ($), Safe Withdrawal Rate (%, default 4%), Annual Return (%), Current Savings ($), Annual Savings Contribution ($), Current Age
+**Formula:** FIRE Number = Annual Spending / SWR; iterate year-by-year: balance = balance×(1+r) + annualContrib until balance ≥ FIRE Number (cap at 100 years)
+**Outputs:** FIRE Number (primary, large), Years to FIRE, Age at FIRE, Current Progress %, Monthly Savings implied; progress bar; year-by-year table (Year, Age, Balance, Annual Contribution, Progress %)
+**CSS additions:** `.fire-progress-bar`, `.fire-progress-fill`, `.fire-row` highlight (green background on target row)
+**Behavior:** Recalculates live on every input; FIRE row in table highlighted green; 100+ years shown if target unreachable
+
 ## Planned Roadmap
 ### Finance
 - [x] Car Payment
 - [x] Monthly Payment / Max Budget (reverse auto loan — Tab 2 of Auto Loan card)
 - [x] Mortgage (with full amortization table + extra payments)
+- [x] Roth vs. Traditional IRA (year-by-year comparison, winner callout)
+- [x] FIRE Number (target portfolio, years to FIRE, year-by-year projection)
 - [ ] Savings Goal / Future Value
 - [ ] Loan Comparison (side-by-side)
 
